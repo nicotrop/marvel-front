@@ -2,9 +2,9 @@ import logo from "../image/marvel-logo.png";
 
 const Header = () => {
   return (
-    <div className="">
+    <header className="m-auto flex items-center">
       <img src={logo} alt="logo" width={150} />
-    </div>
+    </header>
   );
 };
 
