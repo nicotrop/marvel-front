@@ -33,6 +33,8 @@ const Home = () => {
     const forwardArr = [];
     if (page + 1 < 5) {
       arr = [1, 2, 3, 4, 5, "...", Math.floor(data.count / limit)];
+    } else if (page + 1 === Math.floor(data.count / limit)) {
+      arr = [1, "...", page - 2, page - 1, page, page + 1];
     } else {
       for (let i = page; i > 0; i--) {
         if (backArr.length < 2) {
