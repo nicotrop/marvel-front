@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import CharactersGrid from "../components/CharactersGrid";
+import Pagination from "../components/Pagination";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -27,83 +28,47 @@ const Home = () => {
     fetchData();
   }, [limit, page]);
 
-  const paginationArr = () => {
-    let arr = [];
-    const backArr = [];
-    const forwardArr = [];
-    if (page + 1 < 5) {
-      arr = [1, 2, 3, 4, 5, "...", Math.floor(data.count / limit)];
-    } else if (page + 1 === Math.floor(data.count / limit)) {
-      arr = [1, "...", page - 2, page - 1, page, page + 1];
-    } else {
-      for (let i = page; i > 0; i--) {
-        if (backArr.length < 2) {
-          backArr.push(i);
-          console.log(i);
-        }
-      }
-      for (let i = page + 1; i < Math.floor(data.count / limit); i++) {
-        if (forwardArr.length < 2) {
-          forwardArr.push(i + 1);
-        }
-      }
-      arr = [
-        1,
-        "...",
-        ...backArr.sort((a, b) => a - b),
-        page + 1,
-        ...forwardArr,
-        "...",
-        Math.floor(data.count / limit),
-      ];
-    }
-    console.log("arr", arr);
-
-    return arr;
-  };
-
   return isLoading ? (
     <p>En cours de chargement...</p>
   ) : (
     <section className="h-screen w-screen max-w-[1200px] p-5 m-auto overflow-hidden flex flex-col lg:w-[75%] border-solid border-4 border-red-500">
       <Header />
       <CharactersGrid data={data.results} />
-      <footer className="flex flex-col h-[20%] border-solid border-2 border-black mt-2">
-        <div className="flex flex-row w-[100%] justify-between items-center p-2 box-border">
-          <span
-            className="hover:underline hover:cursor-pointer"
-            onClick={() => setPage(page - 1)}
-          >
-            {"< prev"}
-          </span>
-          {paginationArr().map((elem, index) => {
-            return (
-              <span
-                key={index}
-                className={`${
-                  page + 1 === elem &&
-                  "border-solid border-black border-2 pr-1 pl-1"
-                } ${
-                  elem !== "..." && page + 1 !== elem
-                    ? "hover:underline hover:cursor-pointer"
-                    : null
-                }`}
-                onClick={() => {
-                  if (elem !== "..." && page + 1 !== elem) {
-                    setPage(elem - 1);
-                  }
-                }}
-              >
-                {elem}
+      <footer className="flex flex-col h-[25%] border-solid border-2 border-black mt-2 p-2 box-border">
+        <Pagination data={data} setPage={setPage} limit={limit} page={page} />
+        <div className="flex justify-between w-full mt-5">
+          <section className="w-[70%] flex justify-between">
+            <Link to="/">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                home
               </span>
-            );
-          })}
-          <span
-            className="hover:underline hover:cursor-pointer"
-            onClick={() => setPage(page + 1)}
-          >
-            {"next >"}
-          </span>
+            </Link>
+            <Link to="/comics">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                comics
+              </span>
+            </Link>
+            <Link to="/favorites">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                favorites
+              </span>
+            </Link>
+            <Link to="/signin">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                sign in
+              </span>
+            </Link>
+            <Link to="/signup">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                sign up
+              </span>
+            </Link>
+          </section>
+          <section>
+            <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+              change view
+            </span>
+          </section>
         </div>
       </footer>
     </section>
