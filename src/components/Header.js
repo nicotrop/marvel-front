@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
 import logo from "../image/marvel-logo.png";
 import getDate from "../tools/getDate";
 
 const Header = () => {
   return (
-    <header className="m-auto flex flex-col items-center gap-2">
-      <img src={logo} alt="logo" width={150} />
+    <header className="m-auto flex flex-col items-center gap-2 ">
+      <Link to="/">
+        <img src={logo} alt="logo" width={150} />
+      </Link>
+
       <span>{getDate()}</span>
     </header>
   );
