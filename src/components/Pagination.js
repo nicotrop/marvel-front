@@ -44,7 +44,7 @@ const Pagination = ({ data, limit, page, setPage }) => {
   return (
     <div className="flex flex-row w-[100%] justify-between items-center">
       <span
-        className="hover:underline hover:cursor-pointer"
+        className="hover:bg-red-600 hover:text-white hover:cursor-pointer"
         onClick={() => setPage(page - 1)}
       >
         {"< prev"}
@@ -57,7 +57,7 @@ const Pagination = ({ data, limit, page, setPage }) => {
               page + 1 === elem && "pr-1 pl-1 font-bold bg-red-600 text-white"
             } ${
               elem !== "..." && page + 1 !== elem
-                ? "hover:underline hover:cursor-pointer"
+                ? "hover:bg-red-600 hover:text-white hover:pr-1 hover:pl-1 hover:font-bold hover:cursor-pointer"
                 : null
             }`}
             onClick={() => {
@@ -71,7 +71,7 @@ const Pagination = ({ data, limit, page, setPage }) => {
         );
       })}
       <span
-        className="hover:underline hover:cursor-pointer"
+        className="hover:bg-red-600 hover:text-white hover:cursor-pointer"
         onClick={() => setPage(page + 1)}
       >
         {"next >"}
