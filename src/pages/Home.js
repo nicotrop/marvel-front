@@ -1,30 +1,32 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import marvelBg from "../image/marvel-bg.avif";
 
 const Home = () => {
   return (
-    <section className="h-screen w-screen max-w-[1200px] p-5 m-auto overflow-hidden flex flex-col items-center justify-center lg:w-[75%]">
-      <div className="flex flex-col justify-center items-center h-[55%] w-full">
+    <section className="h-screen w-screen p-5 m-auto overflow-hidden flex items-center justify-center bg-zinc-900	relative">
+      <img
+        className="object cover opacity-5 absolute z-0"
+        src={marvelBg}
+        alt="marvel hero poster"
+      />
+      <div className="flex flex-col justify-center items-center h-[55%] w-full lg:w-[75%] max-w-[1200px] z-40">
         <Header />
         <div className="flex flex-col gap-2">
           <Link to="/characters">
-            <span className=" hover:bg-red-600 hover:text-white">
-              characters
-            </span>
+            <span className=" hover:bg-red-600 text-white">characters</span>
           </Link>
           <Link to="/comics">
-            <span className=" hover:bg-red-600 hover:text-white">comics</span>
+            <span className=" hover:bg-red-600 text-white">comics</span>
           </Link>
           <Link to="/favorites">
-            <span className=" hover:bg-red-600 hover:text-white">
-              favorites
-            </span>
+            <span className=" hover:bg-red-600 text-white">favorites</span>
           </Link>
           <Link to="/signup">
-            <span className=" hover:bg-red-600 hover:text-white">signup</span>
+            <span className=" hover:bg-red-600 text-white">signup</span>
           </Link>
           <Link to="/login">
-            <span className=" hover:bg-red-600 hover:text-white">signin</span>
+            <span className=" hover:bg-red-600 text-white">signin</span>
           </Link>
         </div>
       </div>
