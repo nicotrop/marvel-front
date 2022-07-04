@@ -10,16 +10,18 @@ import SearchBar from "../components/SearchBar";
 const CharacterList = () => {
   const [data, setData] = useState([]);
   const [limit] = useState(16);
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState(false);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://nico-marvel-backend.herokuapp.com/character?page=${page}&limit=${limit}`
+          `https://nico-marvel-backend.herokuapp.com/character?page=${page}&limit=${limit}&name=${name}`
         );
+        console.log(data);
         setData(data);
       } catch (error) {
         console.log(error);
@@ -29,7 +31,7 @@ const CharacterList = () => {
       }, 800);
     };
     fetchData();
-  }, [limit, page]);
+  }, [limit, page, name, selected]);
 
   return isLoading ? (
     <Loading />
@@ -37,11 +39,15 @@ const CharacterList = () => {
     <section className="h-screen w-screen max-w-[675px] p-6 m-auto overflow-hidden flex flex-col md:w-[75%] lg:w-[60%]">
       <Header />
       <div
-        className={`overflow-y-hidden h-[85%] mt-3 ${
-          selected && "relative bg-slate-800"
-        }`}
+        className={`overflow-y-hidden h-[85%] mt-3 ${selected && "relative "}`}
       >
-        <SearchBar selected={selected} setSelected={setSelected} />
+        <SearchBar
+          selected={selected}
+          setSelected={setSelected}
+          data={data}
+          setName={setName}
+          name={name}
+        />
         <CharactersGrid data={data.results} selected={selected} />
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">

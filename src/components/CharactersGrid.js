@@ -7,7 +7,11 @@ const CharactersGrid = ({ data, selected }) => {
 
   return (
     <div
-      className={`flex flex-wrap md:grid md:gap-1 md:grid-cols-4 mt-3 md:auto-rows-fr overflow-y-scroll h-[calc(90%-0.75rem)] border-black border-solid border-2 ${
+      className={`${
+        data.length < 16
+          ? "md:grid md:gap-1 md:grid-cols-4 md:grid-rows-4 mt-3"
+          : "md:grid md:gap-1 md:grid-cols-4 mt-3 md:auto-rows-fr"
+      } flex flex-wrap h-[calc(90%-0.75rem)] box-border overflow-y-hidden mb-2 ${
         selected && "opacity-10 z-0"
       }`}
     >
@@ -46,8 +50,8 @@ const CharactersGrid = ({ data, selected }) => {
             ) : (
               <Link to={`/comics/${character._id}`}>
                 {hover && currentChar._id === character._id ? (
-                  <div className="cursor-pointer w-full h-full">
-                    <h1>{character._id}</h1>
+                  <div className={`cursor-pointer w-full h-full`}>
+                    <h1>{character.name}</h1>
                   </div>
                 ) : (
                   <img

@@ -1,26 +1,68 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
-const SearchBar = ({ selected, setSelected }) => {
+const SearchBar = ({ selected, setSelected, setName, data, name }) => {
+  const [hover, setHover] = useState([]);
+
+  console.log(data.count);
+
   return (
     <div
-      className={`h-[10%] w-full mb-1 flex justify-center ${
+      className={`h-[10%] w-full mb-4 flex justify-center ${
         selected && "bg-white z-40"
       }`}
     >
       <div
-        className={`p-2 rounded-md min-w-[250px] flex justify-start items-center shadow ${
-          selected &&
-          "items-start shadow absolute w-auto h-[200px] p-4 bg-white z-40"
+        className={`p-2 rounded-md w-[250px] shadow text-ellipsis box-border flex ${
+          selected
+            ? "absolute h-[200px] bg-white z-40 flex-col top-2"
+            : "content-center"
         }`}
       >
-        <FontAwesomeIcon icon="magnifying-glass" size="sm" color="grey" />
-        <input
-          type="search"
-          className={`outline-none h-full w-full ml-2 text-sm`}
-          placeholder="Look up your favorite Marvel..."
-          onFocus={() => setSelected(true)}
-          onBlur={() => setSelected(false)}
-        />
+        <div className={`flex items-center w-full ${selected && "mb-4"}`}>
+          <FontAwesomeIcon icon="magnifying-glass" size="sm" color="grey" />
+          <input
+            type="search"
+            value={name}
+            className={`outline-none h-full w-full ml-2 text-sm`}
+            placeholder={`${selected ? "" : "Look up your favorite Marvel..."}`}
+            onFocus={() => setSelected(true)}
+            onBlur={() => setSelected(false)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                setSelected(false);
+              }
+            }}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        {selected && (
+          <div className="text-sm pb-1 text-ellipsis flex flex-col justify-between h-[100%] overflow-y-scroll">
+            <div className="mb-2 text-gray-500">{`(${data.count} results)`}</div>
+            <div>
+              {data.results.map((character) => {
+                return (
+                  <h3
+                    key={character._id}
+                    className="hover:bg-slate-500 hover:text-white"
+                    onMouseOver={() => {
+                      setHover(character.name);
+                    }}
+                    onMouseLeave={() => {
+                      setHover();
+                    }}
+                    onClick={() => {
+                      setName(hover[0]);
+                      console.log(hover);
+                    }}
+                  >
+                    {character.name}
+                  </h3>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
