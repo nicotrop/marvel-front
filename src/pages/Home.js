@@ -12,7 +12,7 @@ const Home = () => {
       />
       <div className="flex flex-col justify-center items-center h-[55%] w-full lg:w-[75%] max-w-[1200px] z-40">
         <Header />
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-5">
           <Link to="/characters">
             <span className=" hover:bg-red-600 text-white">characters</span>
           </Link>

@@ -7,12 +7,15 @@ const Header = () => {
   const { pathname } = useLocation();
 
   return (
-    <header className="m-auto flex flex-col items-center gap-2 ">
+    <header className="flex flex-col items-center gap-2">
       <Link to="/">
         <img src={logo} alt="logo" width={150} />
       </Link>
-
-      <span className={`${pathname === "/" && "text-white"}`}>{getDate()}</span>
+      {!pathname.includes("/comics/") && (
+        <span className={`${pathname === "/" && "text-white"}`}>
+          {getDate()}
+        </span>
+      )}
     </header>
   );
 };

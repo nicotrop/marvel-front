@@ -21,7 +21,6 @@ const CharacterList = () => {
         const { data } = await axios.get(
           `https://nico-marvel-backend.herokuapp.com/character?page=${page}&limit=${limit}&name=${name}`
         );
-        console.log(data);
         setData(data);
       } catch (error) {
         console.log(error);
@@ -48,7 +47,7 @@ const CharacterList = () => {
           setName={setName}
           name={name}
         />
-        <CharactersGrid data={data.results} selected={selected} />
+        <CharactersGrid data={data} selected={selected} />
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">
         <Pagination data={data} setPage={setPage} limit={limit} page={page} />

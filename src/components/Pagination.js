@@ -21,7 +21,6 @@ const Pagination = ({ data, limit, page, setPage }) => {
         for (let i = page; i > 0; i--) {
           if (backArr.length < 2) {
             backArr.push(i);
-            console.log(i);
           }
         }
         for (let i = page + 1; i < Math.floor(data.count / limit); i++) {
@@ -40,7 +39,6 @@ const Pagination = ({ data, limit, page, setPage }) => {
         ];
       }
     } else {
-      console.log(Math.ceil(data.count / limit));
       for (let i = 0; i < Math.ceil(data.count / limit); i++) {
         arr.push(i + 1);
       }

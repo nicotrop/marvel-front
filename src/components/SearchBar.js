@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const SearchBar = ({ selected, setSelected, setName, data, name }) => {
   const [hover, setHover] = useState([]);
-
-  console.log(data.count);
+  const { pathname } = useLocation();
 
   return (
     <div
@@ -44,7 +44,7 @@ const SearchBar = ({ selected, setSelected, setName, data, name }) => {
                 return (
                   <h3
                     key={character._id}
-                    className="hover:bg-slate-500 hover:text-white"
+                    className="cursor-pointer text-sm text-gray-500 hover:text-black"
                     onMouseOver={() => {
                       setHover(character.name);
                     }}
@@ -52,11 +52,15 @@ const SearchBar = ({ selected, setSelected, setName, data, name }) => {
                       setHover();
                     }}
                     onClick={() => {
-                      setName(hover[0]);
                       console.log(hover);
+                      setName(hover[0]);
                     }}
                   >
-                    {character.name}
+                    {
+                      character[
+                        `${pathname === "/characters" ? "name" : "title"}`
+                      ]
+                    }
                   </h3>
                 );
               })}
