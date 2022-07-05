@@ -28,11 +28,11 @@ const Navigation = () => {
         <div
           className={`w-[300px] h-[400px] absolute ${
             pathname.includes("/comics/")
-              ? "left-12 top-6"
+              ? "left-14 top-6"
               : pathname === "/characters" || "/comics"
-              ? "left-12 bottom-6"
+              ? "left-14 bottom-6"
               : null
-          }  border-solid border-2 border-red-500 bg-white sm:hidden flex flex-col justify-between items-center p-4`}
+          }  shadow-md bg-white sm:hidden flex flex-col justify-between items-center p-4`}
         >
           <Link to="/characters">
             <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
@@ -67,7 +67,7 @@ const Navigation = () => {
         </div>
       )}
 
-      <section className="w-[70%] sm:flex justify-between hidden">
+      <section className="w-[80%] sm:flex justify-between hidden">
         <Link to="/characters">
           <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
             characters
@@ -95,7 +95,16 @@ const Navigation = () => {
         </Link>
       </section>
       <section className="sm:block hidden">
-        <Link to="/">
+        <Link
+          to="/"
+          className="flex items-baseline gap-1 hover:bg-red-600 hover:text-white cursor-pointer"
+        >
+          <FontAwesomeIcon
+            className="hidden sm:block hover:cursor-pointer hover:text-white"
+            icon="house"
+            size="sm"
+            // color="black"
+          />
           <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
             home
           </span>

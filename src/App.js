@@ -13,8 +13,9 @@ import {
   faMagnifyingGlass,
   faBars,
   faX,
+  faHouse,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faMagnifyingGlass, faBars, faX);
+library.add(faMagnifyingGlass, faBars, faX, faHouse);
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route path="/comics" element={<Comics />}></Route>
         <Route path="/comics/:characterid" element={<Character />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
-        <Route path="/login" element={<Login />}></Route>
+        <Route path="/signin" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route></Route>
       </Routes>

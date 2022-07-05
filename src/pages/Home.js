@@ -4,9 +4,9 @@ import marvelBg from "../image/marvel-bg.avif";
 
 const Home = () => {
   return (
-    <section className="h-screen w-screen p-5 m-auto overflow-hidden flex items-center justify-center bg-zinc-900	relative">
+    <section className="h-screen w-screen p-5 m-auto overflow-hidden flex items-center justify-center bg-zinc-900	relative font-courier">
       <img
-        className="object cover opacity-5 absolute z-0"
+        className="object-cover h-full w-full opacity-5 absolute z-0"
         src={marvelBg}
         alt="marvel hero poster"
       />
@@ -25,7 +25,7 @@ const Home = () => {
           <Link to="/signup">
             <span className=" hover:bg-red-600 text-white">signup</span>
           </Link>
-          <Link to="/login">
+          <Link to="/signin">
             <span className=" hover:bg-red-600 text-white">signin</span>
           </Link>
         </div>

@@ -25,7 +25,7 @@ const SearchBar = ({ selected, setSelected, setName, data, name }) => {
             type="search"
             value={name}
             className={`outline-none h-full w-full ml-2 text-sm`}
-            placeholder={`${selected ? "" : "Look up your favorite Marvel..."}`}
+            placeholder={`${selected ? "" : "Search here..."}`}
             onFocus={() => setSelected(true)}
             onBlur={() => setSelected(false)}
             onKeyUp={(e) => {
