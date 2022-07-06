@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Cookies from "js-cookie";
 import Header from "../components/Header";
 import LoginForm from "../components/LoginForm";
 
@@ -10,6 +11,8 @@ const Login = ({ setUser }) => {
   const [errormsg, setErrormsg] = useState("");
 
   const navigate = useNavigate();
+
+  console.log("token", Cookies.get("token"));
 
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
@@ -27,10 +30,10 @@ const Login = ({ setUser }) => {
         body
       );
       console.log(response.data);
-      // if (response.data.success) {
-      //   // setUser(response.data.success);
-      //   navigate("/");
-      // }
+      if (response.data.success) {
+        setUser(response.data.success);
+        navigate("/");
+      }
     } catch (error) {
       setErrormsg(error.response.data.message);
       console.log(error.response.data);

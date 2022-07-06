@@ -1,10 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 const Navigation = () => {
   const [menu, setMenu] = useState(false);
   const { pathname } = useLocation();
+
+  console.log(Cookies.get("token"));
+
   return (
     <div className="flex justify-between w-full">
       {menu === false ? (
@@ -26,7 +30,7 @@ const Navigation = () => {
       )}
       {menu === true && (
         <div
-          className={`w-[300px] h-[400px] absolute ${
+          className={`w-[250px] h-[400px] absolute ${
             pathname.includes("/comics/")
               ? "left-14 top-6"
               : pathname === "/characters" || "/comics"
@@ -49,16 +53,36 @@ const Navigation = () => {
               favorites
             </span>
           </Link>
-          <Link to="/signin">
-            <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
-              sign in
-            </span>
-          </Link>
-          <Link to="/signup">
-            <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
-              sign up
-            </span>
-          </Link>
+          {Cookies.get("token") ? (
+            <div
+              className="hover:bg-red-600 hover:text-white cursor-pointer flex items-baseline"
+              onClick={() => {
+                console.log("logout");
+                Cookies.remove("token");
+                window.location.reload();
+              }}
+            >
+              <FontAwesomeIcon
+                className="sm:block hover:cursor-pointer hover:text-white mr-2"
+                icon="power-off"
+                size="xs"
+              />
+              <span>sign out</span>
+            </div>
+          ) : (
+            <>
+              <Link to="/signin">
+                <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                  sign in
+                </span>
+              </Link>
+              <Link to="/signup">
+                <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                  sign up
+                </span>
+              </Link>
+            </>
+          )}
           <Link to="/">
             <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
               home
@@ -83,16 +107,36 @@ const Navigation = () => {
             favorites
           </span>
         </Link>
-        <Link to="/signin">
-          <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
-            sign in
-          </span>
-        </Link>
-        <Link to="/signup">
-          <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
-            sign up
-          </span>
-        </Link>
+        {Cookies.get("token") ? (
+          <div
+            className="hover:bg-red-600 hover:text-white cursor-pointer flex items-baseline"
+            onClick={() => {
+              console.log("logout");
+              Cookies.remove("token");
+              window.location.reload();
+            }}
+          >
+            <FontAwesomeIcon
+              className="sm:block hover:cursor-pointer hover:text-white mr-2"
+              icon="power-off"
+              size="xs"
+            />
+            <span>sign out</span>
+          </div>
+        ) : (
+          <>
+            <Link to="/signin">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                sign in
+              </span>
+            </Link>
+            <Link to="/signup">
+              <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
+                sign up
+              </span>
+            </Link>
+          </>
+        )}
       </section>
       <section className="sm:block hidden">
         <Link
@@ -103,7 +147,6 @@ const Navigation = () => {
             className="hidden sm:block hover:cursor-pointer hover:text-white"
             icon="house"
             size="sm"
-            // color="black"
           />
           <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
             home

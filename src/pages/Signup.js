@@ -29,9 +29,9 @@ const Signup = ({ setUser }) => {
         body
       );
       console.log(response.data);
-      // if (response.data.success) {
-      //   navigate("/");
-      // }
+      if (response.data.success) {
+        navigate("/");
+      }
     } catch (error) {
       setErrormsg(error.response.data.message);
       console.log(error.response.data);
@@ -40,16 +40,16 @@ const Signup = ({ setUser }) => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center relative">
-      <section className="w-[70%] min-w-[250px]  md:h-[60%] flex flex-col justify-between items-center md:flex-row p-5 gap-3">
+      <section className="w-[70%] min-w-[250px]  md:h-fit flex flex-col justify-between items-center md:flex-row p-5 gap-3">
         <LoginForm
           handleEmailChange={handleEmailChange}
           handlePasswordChange={handlePasswordChange}
           handleSubmit={handleSubmit}
           handleUsernameChange={handleUsernameChange}
+          errormsg={errormsg}
         />
         <Header />
       </section>
-      {errormsg && <p style={{ color: "red" }}>{errormsg}</p>}
     </div>
   );
 };

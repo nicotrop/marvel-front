@@ -8,16 +8,31 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useState } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faMagnifyingGlass,
   faBars,
   faX,
   faHouse,
+  faPowerOff,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faMagnifyingGlass, faBars, faX, faHouse);
+library.add(faMagnifyingGlass, faBars, faX, faHouse, faPowerOff, faHeart);
 
 function App() {
+  const [setToken] = useState(Cookies.get("token") || null);
+
+  const setUser = (userToken) => {
+    if (userToken) {
+      Cookies.set("token", userToken);
+    } else {
+      Cookies.remove("token");
+    }
+    setToken(userToken);
+  };
+
   return (
     <Router>
       <Routes>
@@ -26,8 +41,8 @@ function App() {
         <Route path="/comics" element={<Comics />}></Route>
         <Route path="/comics/:characterid" element={<Character />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
-        <Route path="/signin" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/signin" element={<Login setUser={setUser} />}></Route>
+        <Route path="/signup" element={<Signup setUser={setUser} />}></Route>
         <Route></Route>
       </Routes>
     </Router>

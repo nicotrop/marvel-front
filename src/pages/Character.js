@@ -62,14 +62,16 @@ const Character = () => {
           <div className="grid grid-cols-3 gap-1 min-h-[40%] overflow-y-scroll p-2 sm:p-0">
             {data?.comics.map((comic) => {
               return (
-                <img
-                  onClick={() => {
-                    setComic(comic);
-                  }}
-                  className="object-cover w-full h-full hover:cursor-pointer"
-                  src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
-                  alt="comic"
-                />
+                <div key={comic._id}>
+                  <img
+                    onClick={() => {
+                      setComic(comic);
+                    }}
+                    className="object-cover w-full h-full hover:cursor-pointer"
+                    src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
+                    alt="comic"
+                  />
+                </div>
               );
             })}
           </div>
