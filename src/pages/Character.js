@@ -25,7 +25,7 @@ const Character = () => {
       }
       setTimeout(() => {
         setIsLoading(false);
-      }, 800);
+      }, 500);
     };
     fetchData();
   }, [characterid]);

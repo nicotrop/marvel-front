@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Cookies from "js-cookie";
 import Header from "../components/Header";
 import LoginForm from "../components/LoginForm";
 
@@ -12,10 +11,10 @@ const Login = ({ setUser }) => {
 
   const navigate = useNavigate();
 
-  console.log("token", Cookies.get("token"));
-
   const handleEmailChange = (event) => setEmail(event.target.value);
+
   const handlePasswordChange = (event) => setPassword(event.target.value);
+
   const handleSubmit = async (event) => {
     console.log("handleSubmit");
     event.preventDefault();
@@ -25,18 +24,14 @@ const Login = ({ setUser }) => {
       password,
     };
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "https://nico-marvel-backend.herokuapp.com/user/login",
         body
       );
-      console.log(response.data);
-      if (response.data.success) {
-        setUser(response.data.success);
-        navigate("/");
-      }
+      setUser(data.success);
+      navigate("/characters");
     } catch (error) {
-      setErrormsg(error.response.data.message);
-      console.log(error.response.data);
+      setErrormsg(error.message);
     }
   };
 

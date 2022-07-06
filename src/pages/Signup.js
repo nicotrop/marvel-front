@@ -24,17 +24,16 @@ const Signup = ({ setUser }) => {
       username,
     };
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "https://nico-marvel-backend.herokuapp.com/user/Signup",
         body
       );
-      console.log(response.data);
-      if (response.data.success) {
+      if (data) {
+        setUser(data.token);
         navigate("/");
       }
     } catch (error) {
-      setErrormsg(error.response.data.message);
-      console.log(error.response.data);
+      setErrormsg(error.message);
     }
   };
 

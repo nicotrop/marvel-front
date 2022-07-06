@@ -7,8 +7,6 @@ const Navigation = () => {
   const [menu, setMenu] = useState(false);
   const { pathname } = useLocation();
 
-  console.log(Cookies.get("token"));
-
   return (
     <div className="flex justify-between w-full">
       {menu === false ? (

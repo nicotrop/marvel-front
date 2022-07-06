@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import marvelBg from "../image/marvel-bg.avif";
@@ -22,12 +23,16 @@ const Home = () => {
           <Link to="/favorites">
             <span className=" hover:bg-red-600 text-white">favorites</span>
           </Link>
-          <Link to="/signup">
-            <span className=" hover:bg-red-600 text-white">signup</span>
-          </Link>
-          <Link to="/signin">
-            <span className=" hover:bg-red-600 text-white">signin</span>
-          </Link>
+          {!Cookies.get("token") && (
+            <>
+              <Link to="/signup">
+                <span className=" hover:bg-red-600 text-white">signup</span>
+              </Link>
+              <Link to="/signin">
+                <span className=" hover:bg-red-600 text-white">signin</span>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </section>

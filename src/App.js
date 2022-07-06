@@ -22,7 +22,7 @@ import {
 library.add(faMagnifyingGlass, faBars, faX, faHouse, faPowerOff, faHeart);
 
 function App() {
-  const [setToken] = useState(Cookies.get("token") || null);
+  const [token, setToken] = useState(Cookies.get("token") || null);
 
   const setUser = (userToken) => {
     if (userToken) {
@@ -41,7 +41,10 @@ function App() {
         <Route path="/comics" element={<Comics />}></Route>
         <Route path="/comics/:characterid" element={<Character />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
-        <Route path="/signin" element={<Login setUser={setUser} />}></Route>
+        <Route
+          path="/signin"
+          element={<Login token={token} setUser={setUser} />}
+        ></Route>
         <Route path="/signup" element={<Signup setUser={setUser} />}></Route>
         <Route></Route>
       </Routes>
