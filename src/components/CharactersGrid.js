@@ -4,29 +4,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const CharactersGrid = ({ data, selected, favorites }) => {
+const CharactersGrid = ({ data, selected, favorites, setFavorites }) => {
   const { pathname } = useLocation();
   const [hover, setHover] = useState(false);
   const [currentChar, setcurrentChar] = useState([]);
 
   const addFavorite = async (char) => {
-    console.log(char);
+    //Set type
     let type = "";
     if (char.title) {
       type = "comic";
     } else {
       type = "character";
     }
+
+    //Find element id in favorites
+    let id = "";
+    if (favorites?.find((elem) => elem.elementID === char._id)) {
+      const resp = favorites?.find((elem) => elem.elementID === char._id);
+      id = resp._id;
+    }
+
+    //Create request body
     const body = {
       title: char.title || char.name,
       path: char.thumbnail.path,
-      id: char.id || null,
+      dbID: id || "",
       type,
       extension: char.thumbnail.extension,
       description: char.description,
       elementID: char._id,
     };
-    console.log([...favorites, body]);
+
     try {
       const { data } = await axios.post(
         "http://localhost:4000/favorite/add",
@@ -36,6 +45,11 @@ const CharactersGrid = ({ data, selected, favorites }) => {
         }
       );
       console.log(data);
+      if (data[1].message === "added") {
+        setFavorites([...favorites, data[0]]);
+      } else if (data[1].message === "deleted") {
+        setFavorites(favorites.filter((elem) => elem._id !== data[0]._id));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +61,7 @@ const CharactersGrid = ({ data, selected, favorites }) => {
         selected && "opacity-20 z-0"
       }`}
     >
-      {data?.results.map((character) => {
+      {data?.results?.map((character) => {
         return (
           <div
             key={character._id}
@@ -106,17 +120,21 @@ const CharactersGrid = ({ data, selected, favorites }) => {
                   className="absolute right-0 top-0 text-light-gray hover:cursor-pointer p-2 z-50 text-[12px]"
                 >
                   <FontAwesomeIcon
-                    className="sm:block  outline-4 outline-black hover:text-red-600"
+                    className={`sm:block ${
+                      favorites.find((elem) => elem.elementID === character._id)
+                        ? "text-red-600 hover:text-white"
+                        : "text-white hover:text-red-600"
+                    }`}
                     icon="heart"
                   />
                 </div>
               ) : null}
               {favorites?.findIndex(
                 (fav) => fav.elementID === character._id
-              ) !== -1 && !hover ? (
+              ) !== -1 ? (
                 <div className="absolute right-0 top-0 p-2 text-white text-[12px]">
                   <FontAwesomeIcon
-                    className="sm:block outline-4 outline-black hover:text-red-600"
+                    className="sm:block  hover:text-red-600"
                     icon="heart"
                   />
                 </div>

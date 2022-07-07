@@ -68,7 +68,12 @@ const CharacterList = () => {
           setName={setName}
           name={name}
         />
-        <CharactersGrid data={data} selected={selected} favorites={favorites} />
+        <CharactersGrid
+          data={data}
+          selected={selected}
+          favorites={favorites}
+          setFavorites={setFavorites}
+        />
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">
         <Pagination data={data} setPage={setPage} limit={limit} page={page} />
