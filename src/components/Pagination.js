@@ -47,7 +47,7 @@ const Pagination = ({ data, limit, page, setPage }) => {
   };
   return (
     data.count > limit && (
-      <div className="flex flex-row w-[100%] justify-between items-center">
+      <div className="flex flex-row w-[100%] justify-between items-center border-solid border-2 border-black p-1">
         <span
           className="hover:bg-red-600 hover:text-white hover:cursor-pointer"
           onClick={() => {

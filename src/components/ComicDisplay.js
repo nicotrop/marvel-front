@@ -18,7 +18,7 @@ const ComicDisplay = ({ data, comic, setComic }) => {
           }}
         >{`<`}</span>
         <img
-          className="object-cover w-[50%] h-full"
+          className="object-contain max-h-[255px] min-w-[100px] w-[50%] h-full object-top"
           src={`${comic?.thumbnail?.path}.${comic?.thumbnail?.extension}`}
           alt="comic"
         />
@@ -38,7 +38,7 @@ const ComicDisplay = ({ data, comic, setComic }) => {
           }}
         >{`>`}</span>
       </div>
-      <div className="overflow-y-scroll flex flex-col gap-1">
+      <div className="overflow-y-auto flex flex-col gap-1">
         <h1 className=" font-bold ">{comic?.title}</h1>
         <p className="text-xs whitespace-normal	">
           {comic?.description || "(no description)"}

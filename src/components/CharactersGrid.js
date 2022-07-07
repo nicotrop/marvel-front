@@ -1,59 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
+// import axios from "axios";
 import Cookies from "js-cookie";
 
-const CharactersGrid = ({ data, selected, favorites, setFavorites }) => {
+const CharactersGrid = ({ data, selected, favorites, addFavorite }) => {
   const { pathname } = useLocation();
   const [hover, setHover] = useState(false);
   const [currentChar, setcurrentChar] = useState([]);
 
-  const addFavorite = async (char) => {
-    //Set type
-    let type = "";
-    if (char.title) {
-      type = "comic";
-    } else {
-      type = "character";
-    }
-
-    //Find element id in favorites
-    let id = "";
-    if (favorites?.find((elem) => elem.elementID === char._id)) {
-      const resp = favorites?.find((elem) => elem.elementID === char._id);
-      id = resp._id;
-    }
-
-    //Create request body
-    const body = {
-      title: char.title || char.name,
-      path: char.thumbnail.path,
-      dbID: id || "",
-      type,
-      extension: char.thumbnail.extension,
-      description: char.description,
-      elementID: char._id,
-    };
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:4000/favorite/add",
-        body,
-        {
-          headers: { authorization: `Bearer ${Cookies.get("token")}` },
-        }
-      );
-      console.log(data);
-      if (data[1].message === "added") {
-        setFavorites([...favorites, data[0]]);
-      } else if (data[1].message === "deleted") {
-        setFavorites(favorites.filter((elem) => elem._id !== data[0]._id));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const navigate = useNavigate();
 
   return (
     <div
@@ -116,7 +72,13 @@ const CharactersGrid = ({ data, selected, favorites, setFavorites }) => {
               </Link>
               {hover && currentChar._id === character._id ? (
                 <div
-                  onClick={() => addFavorite(character)}
+                  onClick={() => {
+                    if (Cookies.get("token")) {
+                      addFavorite(character);
+                    } else {
+                      navigate("/signin");
+                    }
+                  }}
                   className="absolute right-0 top-0 text-light-gray hover:cursor-pointer p-2 z-50 text-[12px]"
                 >
                   <FontAwesomeIcon

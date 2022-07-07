@@ -11,11 +11,7 @@ const Header = () => {
       <Link to="/">
         <img src={logo} alt="logo" width={150} />
       </Link>
-      {!pathname.includes("/comics/") && (
-        <span className={`${pathname === "/" && "text-white"}`}>
-          {getDate()}
-        </span>
-      )}
+      <span className={`${pathname === "/" && "text-white"}`}>{getDate()}</span>
     </header>
   );
 };
