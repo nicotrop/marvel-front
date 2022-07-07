@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faMagnifyingGlass,
@@ -20,11 +20,37 @@ import {
   faPowerOff,
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
+import Loading from "./components/Loading";
 library.add(faMagnifyingGlass, faBars, faX, faHouse, faPowerOff, faHeart);
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (Cookies.get("token")) {
+        try {
+          const { data } = await axios.get(
+            // `https://nico-marvel-backend.herokuapp.com/comics/${characterid}`
+            `http://localhost:4000/favorite/list`,
+            {
+              headers: { authorization: `Bearer ${Cookies.get("token")}` },
+            }
+          );
+          setFavorites(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    };
+    fetchData();
+  }, []);
 
   const setUser = (userToken) => {
     if (userToken) {
@@ -44,7 +70,19 @@ function App() {
       type = "character";
     }
 
-    //Find element id in favorites
+    //Set path and extension
+    let path = "";
+    let extension = "";
+
+    if (char.thumbnail) {
+      path = char.thumbnail.path;
+      extension = char.thumbnail.extension;
+    } else {
+      path = char.path;
+      extension = char.extension;
+    }
+
+    // Find element id in favorites
     let id = "";
     if (favorites?.find((elem) => elem.elementID === char._id)) {
       const resp = favorites?.find((elem) => elem.elementID === char._id);
@@ -54,10 +92,10 @@ function App() {
     //Create request body
     const body = {
       title: char.title || char.name,
-      path: char.thumbnail.path,
+      path: path,
       dbID: id || "",
       type,
-      extension: char.thumbnail.extension,
+      extension: extension,
       description: char.description,
       elementID: char._id,
     };
@@ -70,9 +108,12 @@ function App() {
           headers: { authorization: `Bearer ${Cookies.get("token")}` },
         }
       );
+      console.log("data", data);
       if (data[1].message === "added") {
+        console.log([...favorites, data[0]]);
         setFavorites([...favorites, data[0]]);
       } else if (data[1].message === "deleted") {
+        console.log(favorites.filter((elem) => elem._id !== data[0]._id));
         setFavorites(favorites.filter((elem) => elem._id !== data[0]._id));
       }
     } catch (error) {
@@ -80,7 +121,9 @@ function App() {
     }
   };
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <Router>
       <Routes>
         <Route path="/" element={<Home />}></Route>

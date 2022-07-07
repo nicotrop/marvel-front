@@ -1,40 +1,40 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
-import Loading from "../components/Loading";
+// import axios from "axios";
+// import Cookies from "js-cookie";
+// import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import marvel_logo from "../image/marvel-logo.png";
 
-const Favorites = () => {
-  const [data, setData] = useState([]);
-  const [currFav, setCurrFav] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+const Favorites = ({ addFavorite, favorites }) => {
+  const [data, setData] = useState(favorites);
+  const [currFav, setCurrFav] = useState(favorites[0]);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:4000/favorite/list`,
-          {
-            headers: { authorization: `Bearer ${Cookies.get("token")}` },
-          }
-        );
-        setData(data);
-        setCurrFav(data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    };
-    fetchData();
-  }, []);
-  return isLoading ? (
-    <Loading />
-  ) : (
+  // setCurrFav(favorites[0]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const { data } = await axios.get(
+  //         `http://localhost:4000/favorite/list`,
+  //         {
+  //           headers: { authorization: `Bearer ${Cookies.get("token")}` },
+  //         }
+  //       );
+  //       setData(data);
+  //       setCurrFav(data[0]);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 500);
+  //   };
+  //   fetchData();
+  // }, []);
+  return (
     <section className="h-screen w-screen sm:max-w-[700px] p-6 m-auto overflow-hidden flex flex-col sm:justify-between gap-3 md:w-[75%] lg:w-[60%] relative">
       <header className="h-[50px] max-h-[10%] sm:h-fit relative">
         <Navigation />
@@ -67,7 +67,7 @@ const Favorites = () => {
           <div>
             <span className="text-xs">{`Favorites (${data.length})`}</span>
             <h2 className="text-lg font-semibold">{currFav.title}</h2>
-            <span className="text-xs capitalize font-semibold">
+            <span className="text-xs capitalize">
               Type: {currFav.type || "Character"}
             </span>
           </div>
@@ -102,7 +102,14 @@ const Favorites = () => {
               }}
             >{`>`}</span>
           </div>
-          <button className="text-[10px] w-fit border-solid border-black border-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black">
+          <button
+            className="text-[10px] w-fit border-solid border-black border-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+            onClick={() => {
+              // console.log(currFav);
+              // console.log(favorites);
+              addFavorite(currFav);
+            }}
+          >
             remove from list
           </button>
           <p className="sm:hidden text-sm">{`${
