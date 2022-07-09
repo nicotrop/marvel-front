@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import Cookies from "js-cookie";
 import axios from "axios";
 import Header from "../components/Header";
 import CharactersGrid from "../components/CharactersGrid";
@@ -32,30 +31,6 @@ const Comics = ({ favorites, setFavorites, addFavorite }) => {
     };
     fetchData();
   }, [limit, page, name, selected]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (Cookies.get("token")) {
-  //       try {
-  //         const { data } = await axios.get(
-  //           // `https://nico-marvel-backend.herokuapp.com/comics/${characterid}`
-  //           `http://localhost:4000/favorite/list`,
-  //           {
-  //             headers: { authorization: `Bearer ${Cookies.get("token")}` },
-  //           }
-  //         );
-  //         setFavorites(data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 500);
-  //   };
-  //   fetchData();
-  // }, [setFavorites]);
 
   return isLoading ? (
     <Loading />

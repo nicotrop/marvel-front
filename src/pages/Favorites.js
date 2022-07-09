@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import axios from "axios";
 // import Cookies from "js-cookie";
 // import Loading from "../components/Loading";
@@ -7,35 +8,17 @@ import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import marvel_logo from "../image/marvel-logo.png";
 
-const Favorites = ({ addFavorite, favorites }) => {
-  const [data, setData] = useState(favorites);
-  const [currFav, setCurrFav] = useState(favorites[0]);
-  // const [isLoading, setIsLoading] = useState(true);
+const Favorites = ({ setFavorites, favorites }) => {
+  const [data, setData] = useState([]);
+  const [currFav, setCurrFav] = useState([]);
 
-  // setCurrFav(favorites[0]);
+  useEffect(() => {
+    setData(favorites);
+    setCurrFav(favorites[0]);
+  }, [favorites]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         `http://localhost:4000/favorite/list`,
-  //         {
-  //           headers: { authorization: `Bearer ${Cookies.get("token")}` },
-  //         }
-  //       );
-  //       setData(data);
-  //       setCurrFav(data[0]);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 500);
-  //   };
-  //   fetchData();
-  // }, []);
   return (
-    <section className="h-screen w-screen sm:max-w-[700px] p-6 m-auto overflow-hidden flex flex-col sm:justify-between gap-3 md:w-[75%] lg:w-[60%] relative">
+    <section className="h-screen w-screen sm:max-w-[800px] p-6 m-auto sm:overflow-hidden overflow-scroll flex flex-col gap-3 md:w-[75%] lg:w-[60%] relative">
       <header className="h-[50px] max-h-[10%] sm:h-fit relative">
         <Navigation />
         <Link to="/" className="flex justify-center sm:hidden">
@@ -46,13 +29,24 @@ const Favorites = ({ addFavorite, favorites }) => {
           />
         </Link>
       </header>
-      <main className="sm:h-[65%] min-h-[90%] sm:min-h-0 border-solid border-2 border-black flex justify-between">
-        <div className="w-[25%] sm:w-[20%] border-solid border-2 border-black flex flex-col p-2 gap-2">
-          <span className="text-xs font-extrabold hidden sm:block">{`Favorites (${data.length})`}</span>
-          <div className="grid grid-cols-1 sm:grid-rows-none sm:grid-cols-3 gap-2 overflow-y-scroll">
+      <main className="h-fit min-h-[90%] sm:min-h-0 flex flex-col">
+        <div className="h-[15%] flex flex-col justify-between p-2 gap-1 sm:mb-0 mb-5">
+          <span className="text-xs font-semibold">
+            {"Favorites ("}
+            <FontAwesomeIcon
+              className="text-[8px] text-red-600 mr-[3px]"
+              icon="heart"
+            />
+            {`${data.length})`}
+          </span>
+          <div className="flex overflow-x-scroll h-max">
             {data.map((fav, index) => {
               return (
-                <div onClick={() => setCurrFav(data[index])} key={fav._id}>
+                <div
+                  className="shrink-0 h-full mr-1"
+                  onClick={() => setCurrFav(data[index])}
+                  key={fav._id}
+                >
                   <img
                     className="object-cover w-full h-full cursor-pointer"
                     src={`${fav.path}.${fav.extension}`}
@@ -63,33 +57,71 @@ const Favorites = ({ addFavorite, favorites }) => {
             })}
           </div>
         </div>
-        <div className="w-[75%] sm:w-[55%] border-solid border-2 border-black flex flex-col items-between pr-7 pl-7 pt-2 pb-2 gap-5 box-border">
-          <div>
-            <span className="text-xs">{`Favorites (${data.length})`}</span>
-            <h2 className="text-lg font-semibold">{currFav.title}</h2>
-            <span className="text-xs capitalize">
-              Type: {currFav.type || "Character"}
-            </span>
-          </div>
-          <div className="flex items-center justify-between cursor-pointer">
-            <span
-              onClick={() => {
-                if (
-                  data.findIndex((item) => item._id === currFav._id) - 1 >=
-                  0
-                ) {
-                  setCurrFav(
-                    data[data.findIndex((item) => item._id === currFav._id) - 1]
+        <div className="h-fit sm:h-[85%] sm:flex sm:w-full">
+          <div className="h-[100%] sm:min-w-[60%] flex flex-col items-between p-2 box-border sm:gap-0 gap-2">
+            <div className="sm:hidden flex flex-col items-center">
+              <h2 className="text-lg font-semibold sm:font-normal">
+                {currFav.title}
+              </h2>
+              <span className="font-semibold hidden sm:block capitalize">
+                {currFav.type || "character"}
+              </span>
+              <button
+                className="text-[10px] w-fit  p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+                onClick={() => {
+                  const arr = [...favorites];
+                  console.log("arr-before", arr);
+                  arr.splice(
+                    favorites.findIndex((item) => item._id === currFav._id),
+                    1
                   );
-                }
-              }}
-            >{`<`}</span>
-            <img
-              className="w-[60%] object-cover h-full"
-              src={`${currFav.path}.${currFav.extension}`}
-              alt="favorite"
-            />
+                  console.log("arr-after", arr);
+                  setFavorites(arr);
+                }}
+              >
+                remove from list
+              </button>
+            </div>
+            <div className="flex max-h-[350px] sm:h-[100%] sm:max-h-full items-center justify-between cursor-pointer">
+              <img
+                className="object-cover w-full h-full"
+                src={`${currFav.path}.${currFav.extension}`}
+                alt="favorite"
+              />
+            </div>
+            <p className="sm:hidden text-sm">{`${
+              currFav.description ? currFav.description : "(No description)"
+            }`}</p>
+          </div>
+          <div className="hidden w-[25%] sm:min-w-[40%] sm:flex flex-col p-2 gap-5 box-border text-xs">
+            <div>
+              <h2 className="text-lg font-semibold sm:font-normal">
+                {currFav.title}
+              </h2>
+              <span className="font-semibold hidden sm:block capitalize">
+                {currFav.type || "character"}
+              </span>
+              <button
+                className="mt-2 text-[10px] w-fit  p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+                onClick={() => {
+                  const arr = [...favorites];
+                  console.log("arr-before", arr);
+                  arr.splice(
+                    favorites.findIndex((item) => item._id === currFav._id),
+                    1
+                  );
+                  console.log("arr-after", arr);
+                  setFavorites(arr);
+                }}
+              >
+                remove from list
+              </button>
+            </div>
+            <p className="overflow-y-scroll">{`${
+              currFav.description ? currFav.description : "(No description)"
+            }`}</p>
             <span
+              className="cursor-pointer hover:text-white hover:bg-red-600 w-fit"
               onClick={() => {
                 if (
                   data.findIndex((item) => item._id === currFav._id) <
@@ -98,35 +130,17 @@ const Favorites = ({ addFavorite, favorites }) => {
                   setCurrFav(
                     data[data.findIndex((item) => item._id === currFav._id) + 1]
                   );
+                } else {
+                  setCurrFav(data[0]);
                 }
               }}
-            >{`>`}</span>
+            >
+              next on the list >>
+            </span>
           </div>
-          <button
-            className="text-[10px] w-fit border-solid border-black border-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
-            onClick={() => {
-              // console.log(currFav);
-              // console.log(favorites);
-              addFavorite(currFav);
-            }}
-          >
-            remove from list
-          </button>
-          <p className="sm:hidden text-sm">{`${
-            currFav.description ? currFav.description : "(No description)"
-          }`}</p>
-        </div>
-        <div className="hidden w-[25%] border-solid border-2 border-black sm:flex flex-col pt-2 pl-1 pr-1 pb-2 gap-5 box-border text-xs">
-          <h2 className="text-lg font-semibold border-2 border-solid border-black">
-            {currFav.title}
-          </h2>
-          <span>type: {currFav.type || "character"}</span>
-          <p className="overflow-y-scroll">{`${
-            currFav.description ? currFav.description : "(No description)"
-          }`}</p>
         </div>
       </main>
-      <footer className="hidden sm:flex justify-start items-center h-[15%] mt-2 p-2 box-border border-solid border-black border-2">
+      <footer className="hidden sm:flex justify-start items-center h-[15%] mt-2 p-2 box-border ">
         <Header />
       </footer>
     </section>

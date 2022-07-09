@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../components/Header";
@@ -7,10 +8,12 @@ import Loading from "../components/Loading";
 import ComicDisplay from "../components/ComicDisplay";
 import marvel_logo from "../image/marvel-logo.png";
 
-const Character = () => {
+const Character = ({ favorites, setFavorites, addFavorite }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [comic, setComic] = useState([]);
+  const [fav, setFav] = useState([]);
+
   const { characterid } = useParams();
 
   useEffect(() => {
@@ -30,6 +33,10 @@ const Character = () => {
     };
     fetchData();
   }, [characterid]);
+
+  useEffect(() => {
+    setFav(favorites);
+  }, [favorites]);
 
   return isLoading ? (
     <Loading />
@@ -52,12 +59,44 @@ const Character = () => {
           alt="character"
         />
         <div className="h-[100%] overflow-y-scroll sm:min-h-[80px] flex flex-col gap-1">
-          <h2 className="font-bold text-lg sm:text-base sm:text-start">
-            {data?.name}
-          </h2>
-          <button className="text-[10px] w-fit border-solid border-black border-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black">
-            remove from list
-          </button>
+          <div className="flex items-baseline">
+            {fav.find((elem) => elem.elementID === characterid) && (
+              <FontAwesomeIcon
+                className="text-[10px] text-red-600 mr-[3px]"
+                size="xs"
+                icon="heart"
+              />
+            )}
+            <h2 className="font-bold text-lg sm:text-base sm:text-start">
+              {data?.name}
+            </h2>
+          </div>
+          {fav.find((elem) => elem.elementID === characterid) ? (
+            <button
+              className="text-[10px] w-fit border-solid border-black border-2 p-[3.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+              onClick={() => {
+                const arr = [...fav];
+                console.log("arr-before", arr);
+                arr.splice(
+                  fav.findIndex((item) => item.elementID === data._id),
+                  1
+                );
+                console.log("arr-after", arr);
+                setFavorites(arr);
+              }}
+            >
+              remove from list
+            </button>
+          ) : (
+            <button
+              className="text-[10px] w-fit border-solid border-black border-2 p-[3.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+              onClick={() => {
+                addFavorite(data);
+              }}
+            >
+              add to favorites
+            </button>
+          )}
           <p className="text-xs text-ellipsis sm:text-start mb-2 mt-1 sm:mb-0">
             {data?.description || "(no description)"}
           </p>
@@ -83,10 +122,7 @@ const Character = () => {
                 return (
                   <div key={comic._id} className="bg-slate-700">
                     <img
-                      onClick={(e) => {
-                        console.log(
-                          String(e.target.src).includes(comic.thumbnail.path)
-                        );
+                      onClick={() => {
                         setComic(comic);
                       }}
                       className={`object-cover w-full h-full hover:cursor-pointer opacity-40 hover:opacity-100`}
