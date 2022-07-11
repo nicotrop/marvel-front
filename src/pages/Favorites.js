@@ -19,11 +19,11 @@ const Favorites = ({ setFavorites, favorites }) => {
 
   return (
     <section className="h-screen w-screen sm:max-w-[800px] p-6 m-auto sm:overflow-hidden overflow-scroll flex flex-col gap-3 md:w-[75%] lg:w-[60%] relative">
-      <header className="h-[50px] max-h-[10%] sm:h-fit relative">
+      <header className="h-[100px] max-h-[10%] sm:h-fit relative">
         <Navigation />
         <Link to="/" className="flex justify-center sm:hidden">
           <img
-            className="absolute top-0 m-auto h-[100%]"
+            className="absolute top-0 m-auto h-[100%] z-10"
             src={marvel_logo}
             alt="logo"
           />
@@ -59,7 +59,7 @@ const Favorites = ({ setFavorites, favorites }) => {
         </div>
         <div className="h-fit sm:h-[85%] sm:flex sm:w-full">
           <div className="h-[100%] sm:min-w-[60%] flex flex-col items-between p-2 box-border sm:gap-0 gap-2">
-            <div className="sm:hidden flex flex-col items-center">
+            <div className="sm:hidden flex flex-col items-center gap-2">
               <h2 className="text-lg font-semibold sm:font-normal">
                 {currFav.title}
               </h2>
@@ -67,7 +67,7 @@ const Favorites = ({ setFavorites, favorites }) => {
                 {currFav.type || "character"}
               </span>
               <button
-                className="text-[10px] w-fit  p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
+                className="text-[10px] w-fit mb-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-red-500 hover:text-black"
                 onClick={() => {
                   const arr = [...favorites];
                   console.log("arr-before", arr);
@@ -84,12 +84,12 @@ const Favorites = ({ setFavorites, favorites }) => {
             </div>
             <div className="flex max-h-[350px] sm:h-[100%] sm:max-h-full items-center justify-between cursor-pointer">
               <img
-                className="object-cover w-full h-full"
+                className="object-contain sm:object-cover w-full h-full"
                 src={`${currFav.path}.${currFav.extension}`}
                 alt="favorite"
               />
             </div>
-            <p className="sm:hidden text-sm">{`${
+            <p className="sm:hidden text-sm mt-3 mb-5">{`${
               currFav.description ? currFav.description : "(No description)"
             }`}</p>
           </div>

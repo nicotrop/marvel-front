@@ -39,7 +39,7 @@ const SearchBar = ({ selected, setSelected, setName, data, name }) => {
         {selected && (
           <div className="text-sm pb-1 text-ellipsis flex flex-col justify-between h-[100%] overflow-y-scroll">
             <div className="mb-2 text-gray-500">{`(${data.count} results)`}</div>
-            <div>
+            <div className="z-40">
               {data.results.map((character) => {
                 return (
                   <h3
@@ -53,7 +53,7 @@ const SearchBar = ({ selected, setSelected, setName, data, name }) => {
                     }}
                     onClick={() => {
                       console.log(hover);
-                      setName(hover[0]);
+                      setName(hover);
                     }}
                   >
                     {

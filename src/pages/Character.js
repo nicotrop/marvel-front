@@ -41,8 +41,8 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
   return isLoading ? (
     <Loading />
   ) : (
-    <section className="min-h-screen sm:h-screen w-screen overflow-y-scroll sm:max-w-[675px] p-10 m-auto sm:overflow-hidden flex flex-col sm:justify-between gap-3 md:w-[75%] lg:w-[60%] relative">
-      <div className="h-[50px] sm:h-fit relative">
+    <section className="min-h-screen sm:h-screen w-screen overflow-y-scroll sm:max-w-[800px] p-6 m-auto sm:overflow-hidden flex flex-col sm:justify-between gap-3 md:w-[75%] lg:w-[60%] relative">
+      <div className="h-[50px] sm:h-fit relative mb-5">
         <Navigation />
         <Link to="/" className="flex justify-center sm:hidden">
           <img
@@ -52,7 +52,7 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
           />
         </Link>
       </div>
-      <div className="min-h-[150px] sm:h-[12%] flex flex-row border-solid border-2 border-black p-2 box-border">
+      <div className="min-h-[150px] sm:h-[12%] flex flex-rowp-2 box-border">
         <img
           className="w-[30%] min-w-[140px] max-h-[150px] sm:h-[100%] object-cover mr-3"
           src={`${data?.thumbnail?.path}.${data?.thumbnail?.extension}`}
@@ -102,9 +102,7 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
           </p>
         </div>
       </div>
-      <div
-        className={`overflow-y-hidden min-h-[55%] sm:flex gap-2 border-solid border-2 border-black`}
-      >
+      <div className={`overflow-y-hidden min-h-[55%] sm:flex gap-2`}>
         <div className="hidden sm:flex sm:justify-center sm:w-[70%] ">
           <ComicDisplay data={data} comic={comic} setComic={setComic} />
         </div>

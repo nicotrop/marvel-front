@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const LoginForm = ({
   handleSubmit,
@@ -11,6 +11,7 @@ const LoginForm = ({
   handleUsernameChange,
 }) => {
   const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <div className="w-[100%] md:w-[50%] min-w-[250px] flex flex-col justify-between p-5 gap-5 mt-10 border-solid border-2 border-black">
       <div className="flex items-center justify-center">
@@ -53,14 +54,38 @@ const LoginForm = ({
           onChange={handlePasswordChange}
         />
         {errormsg && <p style={{ color: "red" }}>{errormsg}</p>}
-        <div className="p-2 flex justify-center">
+        {/* <div className="p-2 flex justify-center border-solid border-black border-2"> */}
+        <div className="w-[100%]">
           <button
-            className="m-auto shadow-md text-white text-xl pl-4 pr-4 rounded-md bg-red-600 border-solid border-red-600 border-2"
+            className="m-auto shadow-md text-white text-base p-2 rounded-md bg-red-600 w-full"
             type="submit"
           >
             {`${pathname === "/signup" ? "Signup" : "Login"}`}
           </button>
+          {pathname === "/signin" && (
+            <p className="mt-4">
+              {`Don't have an account? `}
+              <Link
+                to="/signup"
+                className="underline cursor-pointer text-blue-600 hover:no-underline"
+              >
+                {`Sign up`}
+              </Link>
+            </p>
+          )}
+          {pathname === "/signup" && (
+            <p className="mt-4">
+              {`Already have an account? `}
+              <Link
+                to="/signin"
+                className="underline cursor-pointer text-blue-600 hover:no-underline"
+              >
+                {`Sign in`}
+              </Link>
+            </p>
+          )}
         </div>
+        {/* </div> */}
       </form>
     </div>
   );

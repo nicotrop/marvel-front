@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
 
   return (
     <header className="flex flex-col items-center gap-2">

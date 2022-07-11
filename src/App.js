@@ -19,9 +19,20 @@ import {
   faHouse,
   faPowerOff,
   faHeart,
+  faChevronRight,
+  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import Loading from "./components/Loading";
-library.add(faMagnifyingGlass, faBars, faX, faHouse, faPowerOff, faHeart);
+library.add(
+  faMagnifyingGlass,
+  faBars,
+  faX,
+  faHouse,
+  faPowerOff,
+  faHeart,
+  faChevronRight,
+  faChevronLeft
+);
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null);
@@ -33,8 +44,7 @@ function App() {
       if (Cookies.get("token")) {
         try {
           const { data } = await axios.get(
-            // `https://nico-marvel-backend.herokuapp.com/comics/${characterid}`
-            `http://localhost:4000/favorite/list`,
+            `https://nico-marvel-backend.herokuapp.com/favorite/list`,
             {
               headers: { authorization: `Bearer ${Cookies.get("token")}` },
             }
@@ -102,7 +112,7 @@ function App() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/favorite/add",
+        "https://nico-marvel-backend.herokuapp.com/favorite/add",
         body,
         {
           headers: { authorization: `Bearer ${Cookies.get("token")}` },
@@ -126,7 +136,7 @@ function App() {
   ) : (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home favorites={favorites} />}></Route>
         <Route
           path="/characters"
           element={

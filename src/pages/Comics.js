@@ -56,7 +56,7 @@ const Comics = ({ favorites, setFavorites, addFavorite }) => {
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">
         <Pagination data={data} setPage={setPage} limit={limit} page={page} />
-        <Navigation />
+        <Navigation favorites={favorites} />
       </footer>
     </section>
   );

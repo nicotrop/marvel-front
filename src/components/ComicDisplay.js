@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const ComicDisplay = ({ data, comic, setComic }) => {
   return (
     <div className="w-[100%] flex flex-col p-2 pl-4 pr-4 gap-3">
+      <h1 className="font-bold text-center">{comic?.title}</h1>
       <div className="flex justify-between items-center h-[60%]">
         <span
           className="hover:cursor-pointer"
@@ -16,7 +19,13 @@ const ComicDisplay = ({ data, comic, setComic }) => {
               );
             }
           }}
-        >{`<`}</span>
+        >
+          <FontAwesomeIcon
+            className="text-[10px] mr-[3px]"
+            size="sm"
+            icon="chevron-left"
+          />
+        </span>
         <img
           className="object-contain max-h-[255px] min-w-[100px] w-[50%] h-full object-top"
           src={`${comic?.thumbnail?.path}.${comic?.thumbnail?.extension}`}
@@ -36,10 +45,15 @@ const ComicDisplay = ({ data, comic, setComic }) => {
               );
             }
           }}
-        >{`>`}</span>
+        >
+          <FontAwesomeIcon
+            className="text-[10px] mr-[3px]"
+            size="sm"
+            icon="chevron-right"
+          />
+        </span>
       </div>
       <div className="overflow-y-auto flex flex-col gap-1">
-        <h1 className=" font-bold ">{comic?.title}</h1>
         <p className="text-xs whitespace-normal	">
           {comic?.description || "(no description)"}
         </p>

@@ -19,6 +19,7 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        selected ? setPage(0) : setPage(page);
         const { data } = await axios.get(
           `https://nico-marvel-backend.herokuapp.com/character?page=${page}&limit=${limit}&name=${name}`
         );
@@ -32,26 +33,6 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
     };
     fetchData();
   }, [limit, page, name, selected]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (Cookies.get("token")) {
-  //       try {
-  //         const { data } = await axios.get(
-  //           // `https://nico-marvel-backend.herokuapp.com/comics/${characterid}`
-  //           `http://localhost:4000/favorite/list`,
-  //           {
-  //             headers: { authorization: `Bearer ${Cookies.get("token")}` },
-  //           }
-  //         );
-  //         setFavorites(data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-  //   fetchData();
-  // }, [setFavorites]);
 
   return isLoading ? (
     <Loading />
@@ -77,7 +58,7 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">
         <Pagination data={data} setPage={setPage} limit={limit} page={page} />
-        <Navigation />
+        <Navigation favorites={favorites} />
       </footer>
     </section>
   );
