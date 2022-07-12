@@ -118,12 +118,9 @@ function App() {
           headers: { authorization: `Bearer ${Cookies.get("token")}` },
         }
       );
-      console.log("data", data);
       if (data[1].message === "added") {
-        console.log([...favorites, data[0]]);
         setFavorites([...favorites, data[0]]);
       } else if (data[1].message === "deleted") {
-        console.log(favorites.filter((elem) => elem._id !== data[0]._id));
         setFavorites(favorites.filter((elem) => elem._id !== data[0]._id));
       }
     } catch (error) {

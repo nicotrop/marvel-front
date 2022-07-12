@@ -1,16 +1,44 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import axios from "axios";
-// import Cookies from "js-cookie";
-// import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import marvel_logo from "../image/marvel-logo.png";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Favorites = ({ setFavorites, favorites }) => {
   const [data, setData] = useState([]);
   const [currFav, setCurrFav] = useState([]);
+
+  const handleDelete = async (char) => {
+    const body = {
+      title: char.title,
+      description: char.description,
+      elementID: char.elementID,
+      path: char.path,
+      extension: char.extension,
+      type: char.type,
+      dbID: char._id,
+    };
+    try {
+      const { data } = await axios.post(
+        "https://nico-marvel-backend.herokuapp.com/favorite/add",
+        body,
+        { headers: { authorization: `Bearer ${Cookies.get("token")}` } }
+      );
+      console.log(data);
+      const arr = [...favorites];
+      arr.splice(
+        favorites.findIndex((item) => item._id === currFav._id),
+        1
+      );
+
+      setFavorites(arr);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     setData(favorites);
@@ -69,14 +97,7 @@ const Favorites = ({ setFavorites, favorites }) => {
               <button
                 className="text-[10px] w-fit mb-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-red-500 hover:text-black"
                 onClick={() => {
-                  const arr = [...favorites];
-                  console.log("arr-before", arr);
-                  arr.splice(
-                    favorites.findIndex((item) => item._id === currFav._id),
-                    1
-                  );
-                  console.log("arr-after", arr);
-                  setFavorites(arr);
+                  handleDelete(currFav);
                 }}
               >
                 remove from list
@@ -87,6 +108,7 @@ const Favorites = ({ setFavorites, favorites }) => {
                 className="object-contain sm:object-cover w-full h-full"
                 src={`${currFav.path}.${currFav.extension}`}
                 alt="favorite"
+                onClick={() => console.log(currFav)}
               />
             </div>
             <p className="sm:hidden text-sm mt-3 mb-5">{`${
@@ -104,14 +126,7 @@ const Favorites = ({ setFavorites, favorites }) => {
               <button
                 className="mt-2 text-[10px] w-fit  p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
                 onClick={() => {
-                  const arr = [...favorites];
-                  console.log("arr-before", arr);
-                  arr.splice(
-                    favorites.findIndex((item) => item._id === currFav._id),
-                    1
-                  );
-                  console.log("arr-after", arr);
-                  setFavorites(arr);
+                  handleDelete(currFav);
                 }}
               >
                 remove from list

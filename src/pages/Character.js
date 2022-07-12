@@ -7,6 +7,7 @@ import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import ComicDisplay from "../components/ComicDisplay";
 import marvel_logo from "../image/marvel-logo.png";
+import Cookies from "js-cookie";
 
 const Character = ({ favorites, setFavorites, addFavorite }) => {
   const [data, setData] = useState([]);
@@ -37,6 +38,33 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
   useEffect(() => {
     setFav(favorites);
   }, [favorites]);
+
+  const handleDelete = async (char) => {
+    const body = {
+      title: char.title,
+      description: char.description,
+      elementID: char.elementID,
+      path: char.path,
+      extension: char.extension,
+      type: char.type,
+      dbID: char._id,
+    };
+    try {
+      const { data } = await axios.post(
+        "https://nico-marvel-backend.herokuapp.com/favorite/add",
+        body,
+        { headers: { authorization: `Bearer ${Cookies.get("token")}` } }
+      );
+      const arr = [...fav];
+      arr.splice(
+        fav.findIndex((item) => item.elementID === data._id),
+        1
+      );
+      setFavorites(arr);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return isLoading ? (
     <Loading />
@@ -75,14 +103,10 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
             <button
               className="text-[10px] w-fit border-solid border-black border-2 p-[3.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
               onClick={() => {
-                const arr = [...fav];
-                console.log("arr-before", arr);
-                arr.splice(
-                  fav.findIndex((item) => item.elementID === data._id),
-                  1
-                );
-                console.log("arr-after", arr);
-                setFavorites(arr);
+                // console.log(data);
+                // console.log(fav);
+                const element = fav.find((elem) => elem.elementID === data._id);
+                handleDelete(element);
               }}
             >
               remove from list
