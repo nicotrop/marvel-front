@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import marvel_logo from "../image/marvel-logo.png";
 import axios from "axios";
 import Cookies from "js-cookie";
+import defaultImg from "../image/defaultImg.jpeg";
+import Loading from "../components/Loading";
 
 const Favorites = ({ setFavorites, favorites }) => {
-  const [data, setData] = useState([]);
-  const [currFav, setCurrFav] = useState([]);
+  const [data, setData] = useState([favorites]);
+  const [currFav, setCurrFav] = useState([favorites[0]]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleDelete = async (char) => {
     const body = {
@@ -43,9 +48,12 @@ const Favorites = ({ setFavorites, favorites }) => {
   useEffect(() => {
     setData(favorites);
     setCurrFav(favorites[0]);
+    setIsLoading(false);
   }, [favorites]);
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : Cookies.get("token") ? (
     <section className="h-screen w-screen sm:max-w-[800px] p-6 m-auto sm:overflow-hidden overflow-scroll flex flex-col gap-3 md:w-[75%] lg:w-[60%] relative">
       <header className="h-[100px] max-h-[10%] sm:h-fit relative">
         <Navigation />
@@ -77,7 +85,11 @@ const Favorites = ({ setFavorites, favorites }) => {
                 >
                   <img
                     className="object-cover w-full h-full cursor-pointer"
-                    src={`${fav.path}.${fav.extension}`}
+                    src={`${
+                      fav?.path.endsWith("image_not_available")
+                        ? defaultImg
+                        : fav?.path + "." + fav?.extension
+                    }`}
                     alt="favorites"
                   />
                 </div>
@@ -89,10 +101,10 @@ const Favorites = ({ setFavorites, favorites }) => {
           <div className="h-[100%] sm:min-w-[60%] flex flex-col items-between p-2 box-border sm:gap-0 gap-2">
             <div className="sm:hidden flex flex-col items-center gap-2">
               <h2 className="text-lg font-semibold sm:font-normal">
-                {currFav.title}
+                {currFav?.title}
               </h2>
               <span className="font-semibold hidden sm:block capitalize">
-                {currFav.type || "character"}
+                {currFav?.type || "character"}
               </span>
               <button
                 className="text-[10px] w-fit mb-2 p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-red-500 hover:text-black"
@@ -106,22 +118,26 @@ const Favorites = ({ setFavorites, favorites }) => {
             <div className="flex max-h-[350px] sm:h-[100%] sm:max-h-full items-center justify-between cursor-pointer">
               <img
                 className="object-contain sm:object-cover w-full h-full"
-                src={`${currFav.path}.${currFav.extension}`}
+                src={`${
+                  currFav?.path?.endsWith("image_not_available")
+                    ? defaultImg
+                    : currFav?.path + "." + currFav?.extension
+                }`}
                 alt="favorite"
                 onClick={() => console.log(currFav)}
               />
             </div>
             <p className="sm:hidden text-sm mt-3 mb-5">{`${
-              currFav.description ? currFav.description : "(No description)"
+              currFav?.description ? currFav.description : "(No description)"
             }`}</p>
           </div>
           <div className="hidden w-[25%] sm:min-w-[40%] sm:flex flex-col p-2 gap-5 box-border text-xs">
             <div>
               <h2 className="text-lg font-semibold sm:font-normal">
-                {currFav.title}
+                {currFav?.title}
               </h2>
               <span className="font-semibold hidden sm:block capitalize">
-                {currFav.type || "character"}
+                {currFav?.type || "character"}
               </span>
               <button
                 className="mt-2 text-[10px] w-fit  p-[2.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
@@ -133,17 +149,19 @@ const Favorites = ({ setFavorites, favorites }) => {
               </button>
             </div>
             <p className="overflow-y-scroll">{`${
-              currFav.description ? currFav.description : "(No description)"
+              currFav?.description ? currFav?.description : "(No description)"
             }`}</p>
             <span
               className="cursor-pointer hover:text-white hover:bg-red-600 w-fit"
               onClick={() => {
                 if (
-                  data.findIndex((item) => item._id === currFav._id) <
+                  data?.findIndex((item) => item._id === currFav._id) <
                   data.length - 1
                 ) {
                   setCurrFav(
-                    data[data.findIndex((item) => item._id === currFav._id) + 1]
+                    data[
+                      data?.findIndex((item) => item._id === currFav._id) + 1
+                    ]
                   );
                 } else {
                   setCurrFav(data[0]);
@@ -159,6 +177,8 @@ const Favorites = ({ setFavorites, favorites }) => {
         <Header />
       </footer>
     </section>
+  ) : (
+    navigate("/")
   );
 };
 

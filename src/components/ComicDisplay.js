@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import defaultImg from "../image/defaultImg.jpeg";
 
 const ComicDisplay = ({ data, comic, setComic }) => {
   return (
@@ -28,7 +29,11 @@ const ComicDisplay = ({ data, comic, setComic }) => {
         </span>
         <img
           className="object-contain max-h-[255px] min-w-[100px] w-[50%] h-full object-top"
-          src={`${comic?.thumbnail?.path}.${comic?.thumbnail?.extension}`}
+          src={`${
+            comic?.thumbnail.path.endsWith("image_not_available")
+              ? defaultImg
+              : comic?.thumbnail.path + "." + comic?.thumbnail.extension
+          }`}
           alt="comic"
         />
         <span

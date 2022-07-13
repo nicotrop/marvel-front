@@ -31,6 +31,7 @@ const Signup = ({ setUser }) => {
       if (data) {
         setUser(data.token);
         navigate("/");
+        window.location.reload();
       }
     } catch (error) {
       setErrormsg(error.message);

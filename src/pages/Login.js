@@ -30,6 +30,7 @@ const Login = ({ setUser }) => {
       );
       setUser(data.success);
       navigate("/characters");
+      window.location.reload();
     } catch (error) {
       setErrormsg(error.message);
     }

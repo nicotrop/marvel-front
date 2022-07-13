@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -8,12 +8,15 @@ import Loading from "../components/Loading";
 import ComicDisplay from "../components/ComicDisplay";
 import marvel_logo from "../image/marvel-logo.png";
 import Cookies from "js-cookie";
+import defaultImg from "../image/defaultImg.jpeg";
 
 const Character = ({ favorites, setFavorites, addFavorite }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [comic, setComic] = useState([]);
   const [fav, setFav] = useState([]);
+
+  const navigate = useNavigate();
 
   const { characterid } = useParams();
 
@@ -83,7 +86,12 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
       <div className="min-h-[150px] sm:h-[12%] flex flex-rowp-2 box-border">
         <img
           className="w-[30%] min-w-[140px] max-h-[150px] sm:h-[100%] object-cover mr-3"
-          src={`${data?.thumbnail?.path}.${data?.thumbnail?.extension}`}
+          // src={`${data?.thumbnail?.path}.${data?.thumbnail?.extension}`}
+          src={`${
+            data?.thumbnail.path.endsWith("image_not_available")
+              ? defaultImg
+              : data?.thumbnail.path + "." + data?.thumbnail.extension
+          }`}
           alt="character"
         />
         <div className="h-[100%] overflow-y-scroll sm:min-h-[80px] flex flex-col gap-1">
@@ -115,6 +123,9 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
             <button
               className="text-[10px] w-fit border-solid border-black border-2 p-[3.5px] cursor-pointer bg-red-600 text-white shadow-[1px_2px_1px_0_black] font-bold active:translate-y-0.5 active:shadow-[0px_1px_0px_0_black] hover:bg-white hover:text-black"
               onClick={() => {
+                if (!Cookies.get("token")) {
+                  navigate("/signin");
+                }
                 addFavorite(data);
               }}
             >
@@ -148,7 +159,14 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
                         setComic(comic);
                       }}
                       className={`object-cover w-full h-full hover:cursor-pointer opacity-40 hover:opacity-100`}
-                      src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
+                      // src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
+                      src={`${
+                        comic?.thumbnail.path.endsWith("image_not_available")
+                          ? defaultImg
+                          : comic?.thumbnail.path +
+                            "." +
+                            comic?.thumbnail.extension
+                      }`}
                       alt="comic"
                     />
                   </div>

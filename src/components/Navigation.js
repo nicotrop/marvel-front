@@ -9,7 +9,9 @@ const Navigation = () => {
 
   return (
     <div className="flex justify-between w-full">
-      {pathname === "/favorite" || pathname.includes("/comics/") ? (
+      {pathname === "/favorites" ||
+      pathname.includes("/comics/") ||
+      pathname === "/characters" ? (
         <div>
           {menu === false ? (
             <FontAwesomeIcon
@@ -94,10 +96,12 @@ const Navigation = () => {
         }`}
       >
         <section
-          className={`w-[80%]  justify-between ${
-            pathname === "/favorites"
+          className={`w-[100%] sm:w-[80%]  justify-between ${
+            pathname === "/favorites" ||
+            pathname.includes("/comics/") ||
+            pathname === "/characters"
               ? "hidden sm:flex"
-              : "flex text-sm sm:text-base"
+              : "hidden sm:flex sm:text-base"
           }`}
         >
           <Link to="/characters">
@@ -110,7 +114,7 @@ const Navigation = () => {
               comics
             </span>
           </Link>
-          <Link to="/favorites">
+          <Link to={`${Cookies.get("token") ? "/favorites" : "/signin"}`}>
             <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
               favorites
             </span>
@@ -119,7 +123,6 @@ const Navigation = () => {
             <div
               className="hover:bg-red-600 hover:text-white cursor-pointer flex items-baseline"
               onClick={() => {
-                console.log("logout");
                 Cookies.remove("token");
                 window.location.reload();
               }}
@@ -138,19 +141,16 @@ const Navigation = () => {
                   sign in
                 </span>
               </Link>
-              <Link to="/signup">
-                <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
-                  sign up
-                </span>
-              </Link>
             </>
           )}
         </section>
         <section
           className={`w-[20%] justify-end ${
-            pathname === "/favorites"
+            pathname === "/favorites" ||
+            pathname.includes("/comics/") ||
+            pathname === "/characters"
               ? "hidden sm:flex"
-              : "flex text-sm sm:text-base"
+              : "hidden sm:flex sm:text-base"
           }`}
         >
           <Link

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import CharactersGrid from "../components/CharactersGrid";
@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 import Navigation from "../components/Navigation";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
+import marvel_logo from "../image/marvel-logo.png";
 
 const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
   const [data, setData] = useState([]);
@@ -38,7 +39,21 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
     <Loading />
   ) : (
     <section className="h-screen w-screen max-w-[675px] p-6 m-auto overflow-hidden flex flex-col md:w-[75%] lg:w-[60%]">
-      <Header />
+      <header className="hidden sm:block">
+        <Header />
+      </header>
+      <header className="h-[100px] max-h-[10%] sm:h-fit relative sm:hidden">
+        <div className="h-full flex items-center">
+          <Navigation />
+        </div>
+        <Link to="/" className="flex justify-center sm:hidden">
+          <img
+            className="absolute top-0 m-auto h-[100%] z-10"
+            src={marvel_logo}
+            alt="logo"
+          />
+        </Link>
+      </header>
       <div
         className={`overflow-y-hidden h-[85%] mt-3 ${selected && "relative "}`}
       >
@@ -58,7 +73,9 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
       </div>
       <footer className="flex flex-col justify-between h-[15%] mt-2 p-2 box-border">
         <Pagination data={data} setPage={setPage} limit={limit} page={page} />
-        <Navigation favorites={favorites} />
+        <div className="hidden sm:block">
+          <Navigation favorites={favorites} />
+        </div>
       </footer>
     </section>
   );

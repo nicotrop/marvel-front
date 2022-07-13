@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import axios from "axios";
 import Cookies from "js-cookie";
+import defaultImg from "../image/defaultImg.jpeg";
 
 const CharactersGrid = ({ data, selected, favorites, addFavorite }) => {
   const { pathname } = useLocation();
@@ -47,7 +48,13 @@ const CharactersGrid = ({ data, selected, favorites, addFavorite }) => {
                   <>
                     <img
                       className="w-full h-full object-cover"
-                      src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
+                      src={`${
+                        character.thumbnail.path.endsWith("image_not_available")
+                          ? defaultImg
+                          : character.thumbnail.path +
+                            "." +
+                            character.thumbnail.extension
+                      }`}
                       alt={`${character.name}`}
                     />
                   </>
@@ -64,7 +71,13 @@ const CharactersGrid = ({ data, selected, favorites, addFavorite }) => {
                     </h1>
                     <img
                       className="w-full h-full object-cover absolute opacity-10"
-                      src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
+                      src={`${
+                        character.thumbnail.path.endsWith("image_not_available")
+                          ? defaultImg
+                          : character.thumbnail.path +
+                            "." +
+                            character.thumbnail.extension
+                      }`}
                       alt={`${character.name}`}
                     />
                   </div>
