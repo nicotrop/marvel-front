@@ -79,7 +79,7 @@ const Favorites = ({ setFavorites, favorites }) => {
             {data.map((fav, index) => {
               return (
                 <div
-                  className="shrink-0 h-full mr-1"
+                  className="shrink-0 h-full mr-1 max-w-[50px]"
                   onClick={() => setCurrFav(data[index])}
                   key={fav._id}
                 >

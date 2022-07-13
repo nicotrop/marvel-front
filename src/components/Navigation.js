@@ -11,7 +11,8 @@ const Navigation = () => {
     <div className="flex justify-between w-full">
       {pathname === "/favorites" ||
       pathname.includes("/comics/") ||
-      pathname === "/characters" ? (
+      pathname === "/characters" ||
+      pathname === "/comics" ? (
         <div>
           {menu === false ? (
             <FontAwesomeIcon
@@ -44,7 +45,7 @@ const Navigation = () => {
                   comics
                 </span>
               </Link>
-              <Link to="/favorites">
+              <Link to={`${Cookies.get("token") ? "/favorites" : "/signin"}`}>
                 <span className=" hover:bg-red-600 hover:text-white cursor-pointer">
                   favorites
                 </span>
@@ -99,7 +100,8 @@ const Navigation = () => {
           className={`w-[100%] sm:w-[80%]  justify-between ${
             pathname === "/favorites" ||
             pathname.includes("/comics/") ||
-            pathname === "/characters"
+            pathname === "/characters" ||
+            pathname === "/comics"
               ? "hidden sm:flex"
               : "hidden sm:flex sm:text-base"
           }`}
@@ -148,7 +150,8 @@ const Navigation = () => {
           className={`w-[20%] justify-end ${
             pathname === "/favorites" ||
             pathname.includes("/comics/") ||
-            pathname === "/characters"
+            pathname === "/characters" ||
+            pathname === "/comics"
               ? "hidden sm:flex"
               : "hidden sm:flex sm:text-base"
           }`}
