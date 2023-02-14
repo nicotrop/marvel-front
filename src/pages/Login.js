@@ -16,7 +16,6 @@ const Login = ({ setUser }) => {
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
   const handleSubmit = async (event) => {
-    console.log("handleSubmit");
     event.preventDefault();
     setErrormsg("");
     const body = {
@@ -25,7 +24,7 @@ const Login = ({ setUser }) => {
     };
     try {
       const { data } = await axios.post(
-        "https://nico-marvel-backend.herokuapp.com/user/login",
+        "https://marvel-backend-zwjy.onrender.com/user/login",
         body
       );
       setUser(data.success);

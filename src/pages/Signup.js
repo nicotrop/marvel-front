@@ -25,7 +25,7 @@ const Signup = ({ setUser }) => {
     };
     try {
       const { data } = await axios.post(
-        "https://nico-marvel-backend.herokuapp.com/user/Signup",
+        "https://marvel-backend-zwjy.onrender.com/user/Signup",
         body
       );
       if (data) {

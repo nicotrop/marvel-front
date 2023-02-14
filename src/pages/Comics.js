@@ -21,7 +21,7 @@ const Comics = ({ favorites, setFavorites, addFavorite }) => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://nico-marvel-backend.herokuapp.com/comics?page=${page}&limit=${limit}&title=${name}`
+          `https://marvel-backend-zwjy.onrender.com/comics?page=${page}&limit=${limit}&title=${name}`
         );
         setData(data);
       } catch (error) {

@@ -22,7 +22,7 @@ const CharacterList = ({ setFavorites, favorites, addFavorite }) => {
       try {
         selected ? setPage(0) : setPage(page);
         const { data } = await axios.get(
-          `https://nico-marvel-backend.herokuapp.com/character?page=${page}&limit=${limit}&name=${name}`
+          `https://marvel-backend-zwjy.onrender.com/character?page=${page}&limit=${limit}&name=${name}`
         );
         setData(data);
       } catch (error) {

@@ -28,7 +28,7 @@ const Favorites = ({ setFavorites, favorites }) => {
     };
     try {
       const { data } = await axios.post(
-        "https://nico-marvel-backend.herokuapp.com/favorite/add",
+        "https://marvel-backend-zwjy.onrender.com/favorite/add",
         body,
         { headers: { authorization: `Bearer ${Cookies.get("token")}` } }
       );

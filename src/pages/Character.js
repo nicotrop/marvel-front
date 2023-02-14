@@ -24,7 +24,7 @@ const Character = ({ favorites, setFavorites, addFavorite }) => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://nico-marvel-backend.herokuapp.com/comics/${characterid}`
+          `https://marvel-backend-zwjy.onrender.com/comics/${characterid}`
         );
         setData(data);
         setComic(data.comics[0]);
